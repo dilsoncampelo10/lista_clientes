@@ -40,6 +40,7 @@
             android:layout_marginTop="8dp"
             android:gravity="left"
             android:hint="E-Mail"
+            android:inputType="textEmailAddress"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -51,6 +52,7 @@
             android:gravity="left"
             android:hint="Telefone"
             android:textSize="18sp"
+            android:inputType="phone"
             android:textStyle="bold" />
 
         <EditText
@@ -61,6 +63,7 @@
             android:gravity="left"
             android:hint="CEP"
             android:textSize="18sp"
+            android:inputType="number"
             android:textStyle="bold" />
 
         <EditText
@@ -81,6 +84,7 @@
             android:gravity="left"
             android:hint="Número"
             android:textSize="18sp"
+            android:inputType="number"
             android:textStyle="bold" />
 
         <EditText
