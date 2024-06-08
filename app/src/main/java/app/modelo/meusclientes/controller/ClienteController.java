@@ -74,4 +74,13 @@ public class ClienteController extends AppDataBase implements ICrud<Cliente> {
 
     }
 
+    public List<String> gerarListViewString(){
+        List<String> clientes = new ArrayList<>();
+        for (Cliente obj: getAll()) {
+            clientes.add(obj.getId()+", "+obj.getNome());
+        }
+
+        return clientes;
+    }
+
 }

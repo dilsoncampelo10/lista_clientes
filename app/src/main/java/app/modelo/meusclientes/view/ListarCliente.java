@@ -3,7 +3,9 @@ package app.modelo.meusclientes.view;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,7 @@ public class ListarCliente extends Fragment {
     TextView txtTitulo;
     EditText editPesquisar;
     ListView lista_clientes;
-    List<Cliente> clienteList;
+
     List<String> clientes;
     ArrayAdapter<String> clienteAdapter;
 
@@ -67,16 +69,29 @@ public class ListarCliente extends Fragment {
         lista_clientes = view.findViewById(R.id.lista_clientes);
         editPesquisar = view.findViewById(R.id.editPesquisar);
 
-        clientes = new ArrayList<>();
-        clienteList = controller.getAll();
+        clientes = controller.gerarListViewString();
 
-        for (Cliente obj: clienteList) {
-            clientes.add(obj.getId()+", "+obj.getNome());
-        }
 
         clienteAdapter = new ArrayAdapter<>(getContext(),R.layout.listar_cliente_item,R.id.textItem,clientes);
 
         lista_clientes.setAdapter(clienteAdapter);
+
+        editPesquisar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                ListarCliente.this.clienteAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
 
