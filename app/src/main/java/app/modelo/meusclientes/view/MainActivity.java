@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction().replace(R.id.content_fragment, new ModeloVermelhoFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new ListarCliente()).commit();
 
         ClienteController clienteController = new ClienteController(getBaseContext());
     }
@@ -167,6 +167,10 @@ public class MainActivity extends AppCompatActivity
         } else if(id == R.id.nav_add_cliente){
             setTitle("Adicionar Cliente");
             fragmentManager.beginTransaction().replace(R.id.content_fragment,new AdicionarCliente()).commit();
+        }
+        else if(id == R.id.nav_listar_clientes){
+            setTitle("Listar Cliente");
+            fragmentManager.beginTransaction().replace(R.id.content_fragment,new ListarCliente()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

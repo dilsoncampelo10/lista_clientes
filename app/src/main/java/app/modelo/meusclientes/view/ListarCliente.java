@@ -8,12 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import app.modelo.meusclientes.R;
 import app.modelo.meusclientes.controller.ClienteController;
@@ -24,12 +30,16 @@ public class ListarCliente extends Fragment {
 
     View view;
     TextView txtTitulo;
-    EditText editNome, editEmail, editTelefone, editCep, editLogradouro;
-    EditText editNumero, editBairro, editCidade, editEstado;
-    CheckBox chkTermos;
-    Button btnCancelar, btnSalvar;
-    Cliente cliente;
-    ClienteController clienteController;
+    EditText editPesquisar;
+    ListView lista_clientes;
+    List<Cliente> clienteList;
+    List<String> clientes;
+    ArrayAdapter<String> clienteAdapter;
+
+    ArrayList<HashMap<String,String>> filtroClientes;
+
+    ClienteController controller;
+    Cliente obj;
 
     public ListarCliente() {
     }
@@ -45,116 +55,36 @@ public class ListarCliente extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view =  inflater.inflate(R.layout.adicionar_cliente, container, false);
+        view =  inflater.inflate(R.layout.listar_cliente, container, false);
 
         TextView txtTitulo = view.findViewById(R.id.txtTitulo);
 
         txtTitulo.setTextColor(ColorStateList.valueOf(Color.WHITE));
+        txtTitulo.setText(R.string.lista_de_clientes);
 
-        iniciarLayout();
+        controller = new ClienteController(getContext());
 
-        getEventoBotoes();
+        lista_clientes = view.findViewById(R.id.lista_clientes);
+        editPesquisar = view.findViewById(R.id.editPesquisar);
 
+        clientes = new ArrayList<>();
+        clienteList = controller.getAll();
+
+        for (Cliente obj: clienteList) {
+            clientes.add(obj.getId()+", "+obj.getNome());
+        }
+
+        clienteAdapter = new ArrayAdapter<>(getContext(),R.layout.listar_cliente_item,R.id.textItem,clientes);
+
+        lista_clientes.setAdapter(clienteAdapter);
         return view;
     }
 
 
 
-    private void iniciarLayout() {
-        txtTitulo = view.findViewById(R.id.txtTitulo);
-        txtTitulo.setText(R.string.add_cliente);
-        editNome = view.findViewById(R.id.editNome);
-        editEmail = view.findViewById(R.id.editEmail);
-        editTelefone = view.findViewById(R.id.editTelefone);
-        editCep = view.findViewById(R.id.editCep);
-        editLogradouro = view.findViewById(R.id.editLogradouro);
-        editNumero = view.findViewById(R.id.editNumero);
-        editBairro = view.findViewById(R.id.editBairro);
-        editCidade = view.findViewById(R.id.editCidade);
-        editEstado = view.findViewById(R.id.editEstado);
-        chkTermos = view.findViewById(R.id.chkTermos);
-        btnCancelar = view.findViewById(R.id.btnCancelar);
-        btnSalvar = view.findViewById(R.id.btnSalvar);
 
-        cliente = new Cliente();
-        clienteController = new ClienteController(getContext());
 
-    }
 
-    private void getEventoBotoes() {
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        btnSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isDadosOk = true;
-
-                if(TextUtils.isEmpty(editNome.getText())){
-                    isDadosOk = false;
-                    editNome.setError("Digite o nome");
-                    editNome.requestFocus();
-                }
-                if(TextUtils.isEmpty(editEmail.getText())){
-                    isDadosOk = false;
-                    editEmail.setError("Digite o E-mail");
-                    editEmail.requestFocus();
-                }
-
-                if(TextUtils.isEmpty(editTelefone.getText())){
-                    isDadosOk = false;
-                    editTelefone.setError("Digite o Telefone");
-                    editTelefone.requestFocus();
-                }
-
-                if(TextUtils.isEmpty(editCep.getText())){
-                    isDadosOk = false;
-                    editCep.setError("Digite o CEP");
-                    editCep.requestFocus();
-                }
-                if(TextUtils.isEmpty(editLogradouro.getText())){
-                    isDadosOk = false;
-                    editLogradouro.setError("Digite o Logradouro");
-                    editLogradouro.requestFocus();
-                }
-                if(TextUtils.isEmpty(editCidade.getText())){
-                    isDadosOk = false;
-                    editCidade.setError("Digite a Cidade");
-                    editCidade.requestFocus();
-                }
-                if(TextUtils.isEmpty(editBairro.getText())){
-                    isDadosOk = false;
-                    editBairro.setError("Digite o Bairro");
-                    editBairro.requestFocus();
-                }
-                if(TextUtils.isEmpty(editEstado.getText())){
-                    isDadosOk = false;
-                    editEstado.setError("Digite o Estado");
-                    editEstado.requestFocus();
-                }
-
-                if(isDadosOk){
-                    cliente.setNome(editNome.getText().toString());
-                    cliente.setEmail(editEmail.getText().toString());
-                    cliente.setTelefone(editTelefone.getText().toString());
-                    cliente.setCep(editCep.getText().toString());
-                    cliente.setLogradouro(editLogradouro.getText().toString());
-                    cliente.setNumero(editNumero.getText().toString());
-                    cliente.setCidade(editCidade.getText().toString());
-                    cliente.setBairro(editBairro.getText().toString());
-                    cliente.setEstado(editEstado.getText().toString());
-                    cliente.setTermosDeUso(chkTermos.isChecked());
-                    clienteController.create(cliente);
-                    Log.d("SALVANDO", "onClick: Salvo no banco de dados");
-                }
-
-            }
-        });
-    }
 
 
 }

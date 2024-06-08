@@ -13,10 +13,9 @@
             android:id="@+id/txtTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/listar_clientes"
             android:textAlignment="center"
-            android:textSize="20sp"
-            />
+            android:background="@color/colorPrimaryDark"
+            android:textSize="24sp" />
         <EditText
             android:id="@+id/editPesquisar"
             android:layout_width="match_parent"
